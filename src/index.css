@@ -1,0 +1,10 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.container {
+  margin: 0 10vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
