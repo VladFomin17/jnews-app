@@ -8,7 +8,7 @@ const SignUpForm = () => {
     const navigate = useNavigate();
 
     const onFinish = () => {
-
+        navigate('/');
     };
 
     const props: UploadProps = {
@@ -61,7 +61,7 @@ const SignUpForm = () => {
 
                 <Form.Item>
                     <Button block type="primary" htmlType="submit">
-                        Войти
+                        Зарегистрироваться
                     </Button>
                     <a onClick={() => navigate('/')}>Уже есть аккаунт</a>
                 </Form.Item>
