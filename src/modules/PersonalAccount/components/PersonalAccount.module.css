@@ -1,0 +1,18 @@
+.accountContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
