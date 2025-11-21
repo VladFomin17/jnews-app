@@ -3,6 +3,7 @@ import {Avatar, Button, Spin} from "antd";
 import classes from './PersonalAccount.module.css';
 import {useProfile} from "../hooks/useProfile.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
+import ServerTime from "../../../components/ServerTime/ServerTime.tsx";
 
 const PersonalAccount = () => {
     const {
@@ -18,6 +19,7 @@ const PersonalAccount = () => {
             {hasError &&
                 <ErrorAlert message={'Ошибка загрузки данных'} close={() => setHasError(false)}/>
             }
+            <ServerTime/>
             {!isLoading
                 ?
                 <div className={classes.accountContainer}>
