@@ -1,4 +1,4 @@
-import {BASE_API} from "../../../consts/baseApi.ts";
+import {BASE_API} from "../../../constants/baseApi.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import type {SignUpUserType} from "../../../types/types.ts";

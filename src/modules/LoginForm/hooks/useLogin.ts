@@ -1,7 +1,7 @@
 import {useState} from "react";
 import type {LoginInfoType} from "../../../types/types.ts";
 import {useNavigate} from "react-router-dom";
-import {BASE_API} from "../../../consts/baseApi.ts";
+import {BASE_API} from "../../../constants/baseApi.ts";
 
 export function useLogin() {
     const navigate = useNavigate();
