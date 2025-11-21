@@ -1,5 +1,5 @@
 import {useState} from "react";
-import type {LoginInfoType} from "../types/types.ts";
+import type {LoginInfoType} from "../../../types/types.ts";
 import {useNavigate} from "react-router-dom";
 import {BASE_API} from "../../../consts/baseApi.ts";
 
@@ -21,10 +21,13 @@ export function useLogin() {
                 body: JSON.stringify(data),
                 credentials: 'include',
             });
-            const result = await response.json();
 
-            if (result === 200) navigate('/account');
-            else setHasError(true);
+            if (response.status === 200) {
+                navigate('/account');
+            }
+            else {
+                setHasError(true);
+            }
         } catch {
             setHasError(true);
         }

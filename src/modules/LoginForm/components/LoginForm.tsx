@@ -2,7 +2,7 @@ import {Button, Form, Input, Spin, Typography} from "antd";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import classes from './LoginForm.module.css'
 import {useState} from "react";
-import type {LoginInfoType} from "../types/types.ts";
+import type {LoginInfoType} from "../../../types/types.ts";
 import {useLogin} from "../hooks/useLogin.ts";
 
 const LoginForm = () => {
