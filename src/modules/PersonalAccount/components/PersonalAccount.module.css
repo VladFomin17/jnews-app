@@ -5,6 +5,12 @@
     justify-content: space-between;
 }
 
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
 .infoContainer {
     display: flex;
     flex-direction: row;
