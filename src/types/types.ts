@@ -1,3 +1,5 @@
+import type {RcFile} from "antd/es/upload";
+
 export interface LoginInfoType {
     username: string;
     password: string;
@@ -6,7 +8,7 @@ export interface LoginInfoType {
 export interface SignUpUserType extends LoginInfoType{
     confirmPassword: string;
     email: string;
-    avatar?: File | null;
+    avatar: RcFile | null;
 }
 
 export interface UserDataType {

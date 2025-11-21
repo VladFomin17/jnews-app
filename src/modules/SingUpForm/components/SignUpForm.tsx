@@ -5,6 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import {useState} from "react";
 import type {SignUpUserType} from "../../../types/types.ts";
 import {useSignUp} from "../hooks/useSignUp.ts";
+import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
 
 const SignUpForm = () => {
     const [userData, setUserData] = useState<SignUpUserType>({
@@ -15,7 +16,7 @@ const SignUpForm = () => {
         avatar: null,
     });
 
-    const { handleSignUp, isLoading, navigate } = useSignUp();
+    const { error, setError, handleSignUp, isLoading, navigate } = useSignUp();
 
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const key = e.target.name;
@@ -25,19 +26,24 @@ const SignUpForm = () => {
     const onFinish = () => handleSignUp(userData);
 
     const props: UploadProps = {
+        maxCount: 1,
         beforeUpload: (file) => {
             const isPNG = file.type === 'image/png';
-            if (!isPNG) message.error(`${file.name} is not a png file`);
+            if (!isPNG) message.error(`${file.name} не png файл`);
             return false;
         },
         onChange: (info) => {
             const file = info.file.originFileObj;
-            setUserData(prev => ({ ...prev, avatar: file }));
+            if (file) setUserData(prev => ({ ...prev, avatar: file }));
         },
+        onRemove: () => {
+            setUserData(prev => ({ ...prev, avatar: null }));
+        }
     };
 
     return (
         <div className={classes.formContainer}>
+            {error && <ErrorAlert message={error} close={() => setError(null)}/>}
             {!isLoading
                 ? <>
                     <Typography.Title level={3}>Регистрация</Typography.Title>
@@ -62,7 +68,7 @@ const SignUpForm = () => {
                         >
                             <Input name="email"
                                    onChange={(e) => onChange(e)}
-                                   value={userData.username}
+                                   value={userData.email}
                                    prefix={<UserOutlined />} placeholder="Email" />
                         </Form.Item>
                         <Form.Item
@@ -71,7 +77,7 @@ const SignUpForm = () => {
                         >
                             <Input.Password name="password"
                                             onChange={(e) => onChange(e)}
-                                            value={userData.username}
+                                            value={userData.password}
                                             prefix={<LockOutlined />} type="password" placeholder="Введите пароль" />
                         </Form.Item>
                         <Form.Item
@@ -80,13 +86,11 @@ const SignUpForm = () => {
                         >
                             <Input.Password name="comfirmPassword"
                                             onChange={(e) => onChange(e)}
-                                            value={userData.username}
+                                            value={userData.confirmPassword}
                                             prefix={<LockOutlined />} type="password" placeholder="Повторите пароль" />
                         </Form.Item>
-                        <Form.Item
-                            name="avatar"
-                        >
-                            <Upload {...props}>
+                        <Form.Item>
+                            <Upload {...props} name="avatar">
                                 <Button icon={<UploadOutlined />}>Загрузите изображение формата png</Button>
                             </Upload>
                         </Form.Item>
