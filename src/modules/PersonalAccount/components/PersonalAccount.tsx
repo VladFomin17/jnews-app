@@ -74,7 +74,7 @@ const PersonalAccount = () => {
                             Выйти
                         </Button>
                     </div>
-                    {userData?.avatar === "http://localhost:8080/images/DEFAULT.png" && (
+                    {userData?.avatar === "http://localhost:8080/images/default.png" && (
                         <Upload {...uploadProps}>
                             <Button icon={<UploadOutlined />}>Загрузить фото</Button>
                         </Upload>

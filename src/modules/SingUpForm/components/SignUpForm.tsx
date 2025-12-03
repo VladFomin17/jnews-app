@@ -1,8 +1,8 @@
 import classes from "./SignUpForm.module.css";
-import {Button, Form, Input, message, Spin, Typography, Upload, type UploadProps} from "antd";
+import {Button, Form, Input, message, Spin, Typography, Upload, type UploadFile, type UploadProps} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import { UploadOutlined } from '@ant-design/icons';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {SignUpUserType} from "../../../types/types.ts";
 import {useSignUp} from "../hooks/useSignUp.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
@@ -15,6 +15,7 @@ const SignUpForm = () => {
         email: '',
         avatar: null,
     });
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     const { error, setError, handleSignUp, isLoading, navigate } = useSignUp();
 
@@ -25,20 +26,35 @@ const SignUpForm = () => {
 
     const onFinish = () => handleSignUp(userData);
 
+    useEffect(() => {
+        console.log(userData);
+    }, [userData]);
+
     const props: UploadProps = {
         maxCount: 1,
+        fileList,
+        listType: "picture", // важно!
         beforeUpload: (file) => {
-            const isPNG = file.type === 'image/png';
-            if (!isPNG) message.error(`${file.name} не png файл`);
+            if (file.type !== "image/png") {
+                message.error(`${file.name} — не PNG файл`);
+                return Upload.LIST_IGNORE; // лучше чем false
+            }
             return false;
         },
-        onChange: (info) => {
-            const file = info.file.originFileObj;
-            if (file) setUserData(prev => ({ ...prev, avatar: file }));
+        onChange(info) {
+            setFileList(info.fileList);
+
+            const latest = info.fileList[0]?.originFileObj;
+
+            if (latest) {
+                console.log("Файл выбран:", latest);
+                setUserData(prev => ({ ...prev, avatar: latest }));
+            }
         },
-        onRemove: () => {
+        onRemove() {
+            setFileList([]);
             setUserData(prev => ({ ...prev, avatar: null }));
-        }
+        },
     };
 
     return (
@@ -81,17 +97,17 @@ const SignUpForm = () => {
                                             prefix={<LockOutlined />} type="password" placeholder="Введите пароль" />
                         </Form.Item>
                         <Form.Item
-                            name="comfirmPassword"
+                            name="confirmPassword"
                             rules={[{ required: true, message: 'Повторите пароль!' }]}
                         >
-                            <Input.Password name="comfirmPassword"
+                            <Input.Password name="confirmPassword"
                                             onChange={(e) => onChange(e)}
                                             value={userData.confirmPassword}
                                             prefix={<LockOutlined />} type="password" placeholder="Повторите пароль" />
                         </Form.Item>
                         <Form.Item>
-                            <Upload {...props} name="avatar">
-                                <Button icon={<UploadOutlined />}>Загрузите изображение формата png</Button>
+                            <Upload {...props}>
+                                <Button icon={<UploadOutlined />}>Загрузите PNG</Button>
                             </Upload>
                         </Form.Item>
 
