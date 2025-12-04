@@ -2,7 +2,7 @@ import classes from "./SignUpForm.module.css";
 import {Button, Form, Input, Spin, Typography, Upload, type UploadFile, type UploadProps} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import { UploadOutlined } from '@ant-design/icons';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {SignUpUserType} from "../../../types/types.ts";
 import {useSignUp} from "../hooks/useSignUp.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
@@ -29,13 +29,28 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
     });
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const { error, setError, handleSignUp, isLoading, navigate } = useSignUp();
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (profileData) {
+            setUserData(prev => ({
+                ...prev,
+                username: profileData.username,
+                email: profileData.email,
+            }));
+            form.setFieldsValue({
+                username: profileData.username,
+                email: profileData.email,
+            });
+        }
+    }, [profileData, form]);
 
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const key = e.target.name;
         setUserData({...userData ,[key]: e.target.value});
     }
 
-    const onFinish = () => handleSignUp(userData);
+    const onFinish = () => handleSignUp(userData, type);
 
     const props: UploadProps = {
         maxCount: 1,
@@ -71,6 +86,7 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
                 ? <>
                     <Typography.Title level={3}>{TITLES[type]}</Typography.Title>
                     <Form
+                        form={form}
                         name="signUp"
                         initialValues={{ remember: true }}
                         style={{ maxWidth: 360 }}
@@ -121,6 +137,9 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
                         <Form.Item>
                             <Button block type="primary" htmlType="submit">
                                 Зарегистрироваться
+                            </Button>
+                            <Button onClick={() => navigate(-1)} block variant="outlined">
+                                Назад
                             </Button>
                             <a onClick={() => navigate('/')}>Уже есть аккаунт</a>
                         </Form.Item>

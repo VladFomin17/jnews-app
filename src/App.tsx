@@ -2,6 +2,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
 import PersonalPage from "./pages/PersonalPage/PersonalPage.tsx";
+import EditProfilePage from "./pages/EditProfilePage/EditProfilePage.tsx";
 
 const App = () => {
     return (
@@ -10,6 +11,7 @@ const App = () => {
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/account" element={<PersonalPage />} />
+                <Route path="/account/edit" element={<EditProfilePage />} />
             </Routes>
         </BrowserRouter>
     );

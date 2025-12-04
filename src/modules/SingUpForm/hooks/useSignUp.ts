@@ -8,7 +8,7 @@ export function useSignUp() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    async function handleSignUp(data: SignUpUserType) {
+    async function handleSignUp(data: SignUpUserType, type = 'signUp') {
         setIsLoading(true);
         setError(null);
 
@@ -18,19 +18,17 @@ export function useSignUp() {
             formData.append('password', data.password);
             formData.append('email', data.email);
             if (data.avatar) formData.append('avatar', data.avatar);
-            console.log('FormData entries:');
-            for (const pair of formData.entries()) {
-                console.log(pair[0], pair[1]);
-            }
+            const apiURL = type === 'signUp' ? 'auth/register' : 'user/edit';
+            const method = type === 'signUp' ? 'POST' : 'PATCH';
 
-            const response = await fetch(BASE_API + 'auth/register', {
-                method: 'POST',
+            const response = await fetch(BASE_API + apiURL, {
+                method: method,
                 body: formData,
                 credentials: 'include',
             });
 
             if (response.ok) {
-                navigate('/');
+                navigate(-1);
             } else {
                 const result = await response.text();
                 setError(result || 'Ошибка при регистрации');

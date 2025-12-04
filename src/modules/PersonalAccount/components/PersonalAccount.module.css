@@ -11,6 +11,12 @@
     gap: 1vw;
 }
 
+.actionButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+}
+
 .infoContainer {
     display: flex;
     flex-direction: row;

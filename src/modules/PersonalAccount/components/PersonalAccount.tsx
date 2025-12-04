@@ -8,6 +8,7 @@ import {BASE_API, defaultAvatar} from "../../../constants/baseApi.ts";
 
 const PersonalAccount = () => {
     const {
+        navigate,
         userData,
         isLoading,
         error,
@@ -79,11 +80,14 @@ const PersonalAccount = () => {
                             Выйти
                         </Button>
                     </div>
-                    {userData?.avatar === defaultAvatar && (
-                        <Upload {...uploadProps}>
-                            <Button icon={<UploadOutlined />}>Загрузить фото</Button>
-                        </Upload>
-                    )}
+                    <div className={classes.actionButtons}>
+                        {userData?.avatar === defaultAvatar && (
+                            <Upload {...uploadProps}>
+                                <Button icon={<UploadOutlined />}>Загрузить фото</Button>
+                            </Upload>
+                        )}
+                        <Button onClick={() => navigate('/account/edit')}>Редактировать</Button>
+                    </div>
                 </div>
                 :
                 <div className={'spin'}>
