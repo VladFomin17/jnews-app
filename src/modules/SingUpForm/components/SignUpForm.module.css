@@ -1,4 +1,6 @@
 .formContainer {
+    min-width: fit-content;
+    min-height: fit-content;
     display: flex;
     padding: 2vw;
     flex-direction: column;

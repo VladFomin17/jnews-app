@@ -1,16 +1,16 @@
 import {UploadOutlined, UserOutlined} from "@ant-design/icons";
 import {Avatar, Button, message, Spin, Upload, type UploadProps} from "antd";
 import classes from './PersonalAccount.module.css';
-import {useProfile} from "../hooks/useProfile.ts";
+import {useProfile} from "../../../hooks/useProfile.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
 import ServerTime from "../../../components/ServerTime/ServerTime.tsx";
-import {BASE_API} from "../../../constants/baseApi.ts";
+import {BASE_API, defaultAvatar} from "../../../constants/baseApi.ts";
 
 const PersonalAccount = () => {
     const {
         userData,
         isLoading,
-        hasError,
+        error,
         setHasError,
         handleLogout
     } = useProfile();
@@ -19,6 +19,11 @@ const PersonalAccount = () => {
         maxCount: 1,
         customRequest: async ({ file, onSuccess, onError }) => {
             if (!(file instanceof File)) return;
+
+            if (!file.type.startsWith("image/")) {
+                setHasError(`${file.name} — это не изображение`);
+                return;
+            }
 
             const formData = new FormData();
             formData.append("file", file);
@@ -48,8 +53,8 @@ const PersonalAccount = () => {
 
     return (
         <div className={classes.page}>
-            {hasError &&
-                <ErrorAlert message={'Ошибка загрузки данных'} close={() => setHasError(false)}/>
+            {error &&
+                <ErrorAlert message={error} close={() => setHasError(null)}/>
             }
             {!isLoading
                 ?
@@ -74,7 +79,7 @@ const PersonalAccount = () => {
                             Выйти
                         </Button>
                     </div>
-                    {userData?.avatar === "http://localhost:8080/images/default.png" && (
+                    {userData?.avatar === defaultAvatar && (
                         <Upload {...uploadProps}>
                             <Button icon={<UploadOutlined />}>Загрузить фото</Button>
                         </Upload>

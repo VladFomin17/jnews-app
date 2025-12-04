@@ -1,22 +1,33 @@
 import classes from "./SignUpForm.module.css";
-import {Button, Form, Input, message, Spin, Typography, Upload, type UploadFile, type UploadProps} from "antd";
+import {Button, Form, Input, Spin, Typography, Upload, type UploadFile, type UploadProps} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import { UploadOutlined } from '@ant-design/icons';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import type {SignUpUserType} from "../../../types/types.ts";
 import {useSignUp} from "../hooks/useSignUp.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
+import { useProfile } from "../../../hooks/useProfile.ts";
 
-const SignUpForm = () => {
+interface SignUpProps {
+    type?: 'signUp' | 'edit' | 'create';
+}
+
+const TITLES = {
+    signUp: "Регистрация",
+    edit: "Редактирование профиля",
+    create: "Создание пользователя"
+} as const;
+
+const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
+    const { userData: profileData, isLoading: profileLoading } = useProfile();
     const [userData, setUserData] = useState<SignUpUserType>({
-        username: '',
+        username: profileData?.username || '',
         password: '',
         confirmPassword: '',
-        email: '',
+        email: profileData?.email || '',
         avatar: null,
     });
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-
     const { error, setError, handleSignUp, isLoading, navigate } = useSignUp();
 
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -26,18 +37,14 @@ const SignUpForm = () => {
 
     const onFinish = () => handleSignUp(userData);
 
-    useEffect(() => {
-        console.log(userData);
-    }, [userData]);
-
     const props: UploadProps = {
         maxCount: 1,
         fileList,
         listType: "picture", // важно!
         beforeUpload: (file) => {
-            if (file.type !== "image/png") {
-                message.error(`${file.name} — не PNG файл`);
-                return Upload.LIST_IGNORE; // лучше чем false
+            if (!file.type.startsWith("image/")) {
+                setError(`${file.name} — это не изображение`);
+                return Upload.LIST_IGNORE;
             }
             return false;
         },
@@ -60,9 +67,9 @@ const SignUpForm = () => {
     return (
         <div className={classes.formContainer}>
             {error && <ErrorAlert message={error} close={() => setError(null)}/>}
-            {!isLoading
+            {!isLoading && !profileLoading
                 ? <>
-                    <Typography.Title level={3}>Регистрация</Typography.Title>
+                    <Typography.Title level={3}>{TITLES[type]}</Typography.Title>
                     <Form
                         name="signUp"
                         initialValues={{ remember: true }}

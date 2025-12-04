@@ -1,4 +1,6 @@
 .formContainer {
+    min-width: fit-content;
+    min-height: fit-content;
     position: relative;
     display: flex;
     padding: 2vw;
@@ -6,7 +8,7 @@
     border: 1px solid #2f3039;
     border-radius: 2vw;
     width: 20vw;
-    height: 25vw;
+    height: 20vw;
     align-items: center;
     gap: 1vw;
     box-shadow: 0.2vw 0.2vw 1vw #2f3039;
