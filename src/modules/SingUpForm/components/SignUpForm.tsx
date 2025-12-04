@@ -1,5 +1,5 @@
 import classes from "./SignUpForm.module.css";
-import {Button, Form, Input, Spin, Typography, Upload, type UploadFile, type UploadProps} from "antd";
+import {Button, Form, Input, Select, Spin, Typography, Upload, type UploadFile, type UploadProps} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import { UploadOutlined } from '@ant-design/icons';
 import {useEffect, useState} from "react";
@@ -9,16 +9,18 @@ import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
 import { useProfile } from "../../../hooks/useProfile.ts";
 
 interface SignUpProps {
-    type?: 'signUp' | 'edit' | 'create';
+    type?: 'signUp' | 'edit' | 'create' | 'editAdmin';
+    id?: number;
 }
 
 const TITLES = {
     signUp: "Регистрация",
     edit: "Редактирование профиля",
-    create: "Создание пользователя"
+    create: "Создание пользователя",
+    editAdmin: "Редактирование пользователя",
 } as const;
 
-const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
+const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp', id}) => {
     const { userData: profileData, isLoading: profileLoading } = useProfile();
     const [userData, setUserData] = useState<SignUpUserType>({
         username: profileData?.username || '',
@@ -28,11 +30,11 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
         avatar: null,
     });
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const { error, setError, handleSignUp, isLoading, navigate } = useSignUp();
+    const { error, setError, handleSignUp, isLoading, navigate, getUserById } = useSignUp();
     const [form] = Form.useForm();
 
     useEffect(() => {
-        if (profileData) {
+        if (profileData && type === 'signUp') {
             setUserData(prev => ({
                 ...prev,
                 username: profileData.username,
@@ -45,12 +47,44 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
         }
     }, [profileData, form]);
 
+    useEffect(() => {
+        async function fillFormData() {
+            if (id) {
+                const user = await getUserById(id);
+                if (user) {
+                    setUserData(prev => ({
+                        ...prev,
+                        username: user.username,
+                        email: user.email,
+                        password:  user.password ?? "",
+                        role: user.role
+                    }));
+                    form.setFieldsValue({
+                        username: user.username,
+                        email: user.email,
+                        password: user.password,
+                        role: user.role
+                    });
+                }
+            }
+        }
+
+        if (type === 'editAdmin') fillFormData();
+    }, [type, id, form]);
+
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         const key = e.target.name;
         setUserData({...userData ,[key]: e.target.value});
     }
 
-    const onFinish = () => handleSignUp(userData, type);
+    const onFinish = () => {
+        if (type !== 'editAdmin') {
+            handleSignUp(userData, type);
+        } else {
+            console.log(userData)
+            handleSignUp(userData, type, id);
+        }
+    }
 
     const props: UploadProps = {
         maxCount: 1,
@@ -128,6 +162,22 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp'}) => {
                                             value={userData.confirmPassword}
                                             prefix={<LockOutlined />} type="password" placeholder="Повторите пароль" />
                         </Form.Item>
+                        {(type === "editAdmin" || type === "create") && (
+                            <Form.Item
+                                name="role"
+                                rules={[{ required: true, message: 'Выберите роль' }]}
+                            >
+                                <Select
+                                    placeholder="Выберите роль"
+                                    onChange={(value) => setUserData(prev => ({ ...prev, role: value }))}
+                                    options={[
+                                        { value: "VISITOR", label: "Посетитель" },
+                                        { value: "MODERATOR", label: "Модератор" },
+                                        { value: "ADMIN", label: "Администратор" },
+                                    ]}
+                                />
+                            </Form.Item>
+                        )}
                         <Form.Item>
                             <Upload {...props}>
                                 <Button icon={<UploadOutlined />}>Загрузите PNG</Button>

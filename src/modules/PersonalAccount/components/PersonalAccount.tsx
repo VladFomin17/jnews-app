@@ -87,6 +87,8 @@ const PersonalAccount = () => {
                             </Upload>
                         )}
                         <Button onClick={() => navigate('/account/edit')}>Редактировать</Button>
+                        {userData?.role === 'ADMIN'
+                            && <Button onClick={() => navigate('/admin')}>Админ-панель</Button>}
                     </div>
                 </div>
                 :

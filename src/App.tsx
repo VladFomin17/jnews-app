@@ -3,6 +3,9 @@ import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
 import PersonalPage from "./pages/PersonalPage/PersonalPage.tsx";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage.tsx";
+import AdminPage from "./pages/AdminPage/AdminPage.tsx";
+import AdminEditUser from "./pages/AdminEditUser/AdminEditUser.tsx";
+import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser.tsx";
 
 const App = () => {
     return (
@@ -12,6 +15,9 @@ const App = () => {
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/account" element={<PersonalPage />} />
                 <Route path="/account/edit" element={<EditProfilePage />} />
+                <Route path="/admin/edit/:id" element={<AdminEditUser />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/create" element={<AdminCreateUser />} />
             </Routes>
         </BrowserRouter>
     );

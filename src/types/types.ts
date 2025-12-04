@@ -9,6 +9,7 @@ export interface SignUpUserType extends LoginInfoType{
     confirmPassword: string;
     email: string;
     avatar: RcFile | null;
+    role?: RoleType;
 }
 
 export interface UserDataType {
@@ -18,6 +19,7 @@ export interface UserDataType {
     role: RoleType;
     avatar?: string;
     visitsCount: number;
+    password?: string;
 }
 
 export type RoleType = 'VISITOR' | 'MODERATOR' | 'ADMIN';
