@@ -63,7 +63,6 @@ const NewsList = () => {
                                     description={
                                         <>
                                             <p>{item.description}</p>
-                                            <p>{item.description}</p>
                                         </>
                                     }
                                 />
