@@ -16,7 +16,7 @@ export function useUsers() {
         if (result.status === 200 && result.data) {
             setUsers(result.data);
         } else if (result.status === 500) {
-            navigate("/");
+            navigate("/login");
             setError("Ошибка авторизации");
         } else {
             setError("Ошибка соединения с сервером");
