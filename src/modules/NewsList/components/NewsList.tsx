@@ -28,7 +28,7 @@ const NewsList = () => {
                     <div className={classes.header}>
                         <Typography.Title level={3}>Новости</Typography.Title>
                         <div className={classes.buttons}>
-                            {userData?.role !== 'VISITOR'
+                            {userData && userData?.role !== 'VISITOR'
                                 && <Button onClick={() => navigate('/news/create')}>Добавить</Button>
                             }
                             {userData
