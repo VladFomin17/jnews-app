@@ -43,7 +43,7 @@ const NewsList = () => {
                             hoverable
                             loading={loadingMap[item.id]}
                             actions={[
-                                userData?.role !== "VISITOR" && (
+                                userData?.role !== "VISITOR" && userData && (
                                     <>
                                         <EditOutlined onClick={() => navigate(`/news/edit/${item.id}`)} />
                                         <DeleteOutlined onClick={() => handleDelete(item.id)} />
