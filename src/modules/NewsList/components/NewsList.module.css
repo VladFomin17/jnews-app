@@ -1,0 +1,17 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100%;
+    gap: 1.6vw;
+}
+
+.newsContent {
+    display: flex;
+    gap: 1.6vw;
+}
+
+.newsImage {
+    height: 20vw;
+    border-radius: 8px;
+}

@@ -6,12 +6,14 @@ import EditProfilePage from "./pages/EditProfilePage/EditProfilePage.tsx";
 import AdminPage from "./pages/AdminPage/AdminPage.tsx";
 import AdminEditUser from "./pages/AdminEditUser/AdminEditUser.tsx";
 import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser.tsx";
+import NewsPage from "./pages/NewsPage/NewsPage.tsx";
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<LoginPage />} />
+                <Route path="/" element={<NewsPage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/account" element={<PersonalPage />} />
                 <Route path="/account/edit" element={<EditProfilePage />} />

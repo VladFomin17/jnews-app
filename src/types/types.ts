@@ -23,3 +23,10 @@ export interface UserDataType {
 }
 
 export type RoleType = 'VISITOR' | 'MODERATOR' | 'ADMIN';
+
+export interface NewsType {
+    id: number;
+    title: string;
+    description: string;
+    imageSrc: string;
+}
