@@ -7,6 +7,8 @@ import AdminPage from "./pages/AdminPage/AdminPage.tsx";
 import AdminEditUser from "./pages/AdminEditUser/AdminEditUser.tsx";
 import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser.tsx";
 import NewsPage from "./pages/NewsPage/NewsPage.tsx";
+import CreateNewsPage from "./pages/CreateNewsPage/CreateNewsPage.tsx";
+import EditNewsPage from "./pages/EditNewsPage/EditNewsPage.tsx";
 
 const App = () => {
     return (
@@ -20,6 +22,8 @@ const App = () => {
                 <Route path="/admin/edit/:id" element={<AdminEditUser />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/create" element={<AdminCreateUser />} />
+                <Route path="/news/edit/:id" element={<EditNewsPage />} />
+                <Route path="/news/create" element={<CreateNewsPage />} />
             </Routes>
         </BrowserRouter>
     );

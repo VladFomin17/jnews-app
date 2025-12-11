@@ -30,3 +30,9 @@ export interface NewsType {
     description: string;
     imageSrc: string;
 }
+
+export interface NewsFormType {
+    title: string;
+    description: string;
+    image: RcFile | null;
+}

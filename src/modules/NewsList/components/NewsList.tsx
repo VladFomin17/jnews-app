@@ -1,15 +1,15 @@
-import {Card, Typography} from "antd";
+import {Button, Card, Typography} from "antd";
 import classes from './NewsList.module.css';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import {useEffect, useState} from "react";
 import type {NewsType} from "../../../types/types.ts";
-
-const actions: React.ReactNode[] = [
-    <EditOutlined key="edit" />,
-    <DeleteOutlined key="delete"/>,
-];
+import {useNavigate} from "react-router-dom";
+import {useProfile} from "../../../hooks/useProfile.ts";
 
 const NewsList = () => {
+    const navigate = useNavigate();
+    const { userData } = useProfile();
+    const [actions, setActions] = useState<React.ReactNode[]>([]);
     const news: NewsType[] = [
         {
             id: 1,
@@ -48,9 +48,29 @@ const NewsList = () => {
         });
     }, [news]);
 
+    useEffect(() => {
+        if (userData?.role === 'MODERATOR') {
+            setActions([
+                <EditOutlined key="edit" />,
+                <DeleteOutlined key="delete"/>,
+            ])
+        }
+    }, []);
+
     return (
         <div className={classes.page}>
-            <Typography.Title level={3}>Новости</Typography.Title>
+            <div className={classes.header}>
+                <Typography.Title level={3}>Новости</Typography.Title>
+                <div className={classes.buttons}>
+                    {userData?.role === 'MODERATOR'
+                        && <Button onClick={() => navigate('/news/create')}>Добавить</Button>
+                    }
+                    {userData
+                        ? <Button onClick={() => navigate('/account')}>Профиль</Button>
+                        : <Button onClick={() => navigate('/login')}>Войти</Button>
+                    }
+                </div>
+            </div>
             {news.map(item =>
                 <Card
                     hoverable

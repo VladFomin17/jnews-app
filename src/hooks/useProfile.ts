@@ -15,7 +15,6 @@ export function useProfile() {
             if (result.status === 200 && result.data) {
                 return result.data;
             } else if (result.status === 500) {
-                navigate("/");
                 throw new Error("Ошибка авторизации");
             } else {
                 throw new Error("Ошибка соединения с сервером");
