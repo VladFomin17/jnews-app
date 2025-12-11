@@ -4,7 +4,7 @@ import {logoutRequest} from "../modules/PersonalAccount/api/logoutRequest.ts";
 import {useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
-export function useProfile() {
+export function useProfile(enabled = true) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -19,7 +19,8 @@ export function useProfile() {
             } else {
                 throw new Error("Ошибка соединения с сервером");
             }
-        }
+        },
+        enabled
     });
 
     const logoutMutation = useMutation({

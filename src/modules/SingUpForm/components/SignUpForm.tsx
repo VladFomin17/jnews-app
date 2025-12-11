@@ -3,7 +3,7 @@ import {Button, Form, Input, Select, Spin, Typography, Upload, type UploadFile, 
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import { UploadOutlined } from '@ant-design/icons';
 import {useEffect, useState} from "react";
-import type {SignUpUserType, UserDataType} from "../../../types/types.ts";
+import type {SignUpUserType} from "../../../types/types.ts";
 import {useSignUp} from "../hooks/useSignUp.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
 import { useProfile } from "../../../hooks/useProfile.ts";
@@ -21,17 +21,8 @@ const TITLES = {
 } as const;
 
 const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp', id}) => {
-    function getUserData() {
-        const { userData: profileData, isLoading: profileLoading } = useProfile();
-        return {profileData, profileLoading}
-    }
-    let profileData: UserDataType | undefined;
-    let profileLoading;
-    if (type === 'edit' || type === 'editAdmin') {
-        const data = getUserData();
-        profileData = data.profileData;
-        profileLoading = data.profileLoading;
-    }
+    const shouldLoadProfile = type === 'edit';
+    const { userData: profileData, isLoading: profileLoading } = useProfile(shouldLoadProfile);
     const [userData, setUserData] = useState<SignUpUserType>({
         username: profileData?.username || '',
         password: '',
@@ -201,7 +192,7 @@ const SignUpForm: React.FC<SignUpProps> = ({type = 'signUp', id}) => {
                             <Button onClick={() => navigate(-1)} block variant="outlined">
                                 Назад
                             </Button>
-                            <a onClick={() => navigate('/')}>Уже есть аккаунт</a>
+                            <a onClick={() => navigate(-1)}>Уже есть аккаунт</a>
                         </Form.Item>
                     </Form></>
                 :

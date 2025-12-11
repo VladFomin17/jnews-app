@@ -70,6 +70,9 @@ const LoginForm = () => {
                             <Button block type="primary" htmlType="submit">
                                 Войти
                             </Button>
+                            <Button onClick={() => navigate(-1)} block variant="outlined">
+                                Назад
+                            </Button>
                             <a onClick={() => navigate('/sign-up')}>Ещё нет аккаунта</a>
                         </Form.Item>
                     </Form>
