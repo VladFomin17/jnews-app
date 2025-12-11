@@ -3,6 +3,7 @@ import classes from './NewsList.module.css';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import {useNews} from "../hooks/useNews.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
+import { BASE_API } from "../../../constants/baseApi.ts";
 
 const NewsList = () => {
     const {
@@ -55,7 +56,7 @@ const NewsList = () => {
                                     className={classes.newsImage}
                                     draggable={false}
                                     alt="example"
-                                    src={item.imageSrc}
+                                    src={BASE_API.slice(0, -1) + item.imageSrc}
                                 />
                                 <Card.Meta
                                     title={item.title}
