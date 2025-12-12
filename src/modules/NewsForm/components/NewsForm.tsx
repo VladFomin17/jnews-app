@@ -130,7 +130,7 @@ const NewsForm: React.FC<NewsFormProps> = ({type = 'create', id}) => {
                     </Form.Item>
                     <Form.Item>
                         <Upload {...props}>
-                            <Button icon={<UploadOutlined/>}>Загрузите PNG</Button>
+                            <Button icon={<UploadOutlined/>}>Загрузите изображение</Button>
                         </Upload>
                     </Form.Item>
 
