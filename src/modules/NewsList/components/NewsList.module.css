@@ -13,6 +13,7 @@
 
 .newsImage {
     height: 20vw;
+    width: auto;
     border-radius: 8px;
 }
 

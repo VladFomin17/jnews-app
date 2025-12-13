@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import type {NewsType} from "../../../types/types.ts";
 import {fetchNews} from "../api/fetchNews.ts";
 import {deleteNews} from "../deleteNews.ts";
+import {BASE_API} from "../../../constants/baseApi.ts";
 
 export function useNews() {
     const navigate = useNavigate();
@@ -38,8 +39,7 @@ export function useNews() {
     useEffect(() => {
         news.forEach(item => {
             const img = new Image();
-            img.src = item.imageSrc;
-
+            img.src =`${BASE_API.slice(0, -1)}${item.imageSrc}`;
             img.onload = () => handleImageLoaded(item.id);
             img.onerror = () => handleImageLoaded(item.id);
         });

@@ -3,14 +3,12 @@ import classes from './NewsList.module.css';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import {useNews} from "../hooks/useNews.ts";
 import ErrorAlert from "../../../components/ErrorAlert/ErrorAlert.tsx";
-import { BASE_API } from "../../../constants/baseApi.ts";
 
 const NewsList = () => {
     const {
         news,
         navigate,
         userData,
-        loadingMap,
         error,
         setError,
         isLoading,
@@ -41,22 +39,21 @@ const NewsList = () => {
                         <Card
                             key={item.id}
                             hoverable
-                            loading={loadingMap[item.id]}
-                            actions={[
-                                userData?.role !== "VISITOR" && userData && (
-                                    <>
-                                        <EditOutlined onClick={() => navigate(`/news/edit/${item.id}`)} />
-                                        <DeleteOutlined onClick={() => handleDelete(item.id)} />
-                                    </>
-                                )
-                            ]}
+                            loading={false}
+                            actions={
+                                userData?.role !== "VISITOR" && userData ? [
+                                        <EditOutlined onClick={() => navigate(`/news/edit/${item.id}`)}/>,
+                                        <DeleteOutlined onClick={() => handleDelete(item.id)}/>
+                                    ]
+                                    : []
+                            }
                         >
                             <div className={classes.newsContent}>
                                 <img
                                     className={classes.newsImage}
                                     draggable={false}
                                     alt="example"
-                                    src={BASE_API.slice(0, -1) + item.imageSrc}
+                                    src={item.imageSrc}
                                 />
                                 <Card.Meta
                                     title={item.title}
