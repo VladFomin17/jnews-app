@@ -48,7 +48,7 @@ export function useSignUp() {
             });
 
             if (response.ok) {
-                if (type === 'edit') navigate('login')
+                if (type === 'edit') navigate('/login')
                 else navigate(-1);
             } else {
                 const result = await response.text();
