@@ -48,7 +48,8 @@ export function useSignUp() {
             });
 
             if (response.ok) {
-                navigate(-1);
+                if (type === 'edit') navigate('login')
+                else navigate(-1);
             } else {
                 const result = await response.text();
                 setError(result || 'Ошибка при регистрации');
